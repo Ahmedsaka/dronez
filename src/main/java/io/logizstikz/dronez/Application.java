@@ -4,21 +4,23 @@ import io.logizstikz.dronez.Enum.Model;
 import io.logizstikz.dronez.Enum.State;
 import io.logizstikz.dronez.model.Drone;
 import io.logizstikz.dronez.model.DroneState;
+import io.logizstikz.dronez.model.DroneStateAuditEvent;
 import io.logizstikz.dronez.repository.DroneRepository;
+import io.logizstikz.dronez.repository.DroneStateAuditRepository;
 import io.logizstikz.dronez.repository.DroneStateRepository;
 import io.logizstikz.dronez.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @EnableJpaRepositories
+@EnableElasticsearchRepositories(basePackages = "io.logizstikz.dronez.repository")
 @SpringBootApplication
 public class Application {
 
@@ -34,6 +36,8 @@ class Initializer implements CommandLineRunner {
 	private DroneRepository droneRepository;
 	@Autowired
 	private DroneStateRepository droneStateRepository;
+	@Autowired
+	private DroneStateAuditRepository droneStateAuditRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -54,8 +58,18 @@ class Initializer implements CommandLineRunner {
 			statuses.add(droneState);
 
 		}
-//		droneRepository.saveAll(drones);
 		droneStateRepository.saveAll(statuses);
+
+		List<DroneStateAuditEvent> droneStateAuditEvents = new LinkedList<>();
+		for (DroneState droneState : droneStateRepository.findAll()) {
+			DroneStateAuditEvent droneStateAuditEvent = new DroneStateAuditEvent();
+			droneStateAuditEvent.setDroneId(droneState.getDrone().getId());
+			droneStateAuditEvent.setDroneName(droneState.getDrone().getName());
+			droneStateAuditEvent.setBatteryLevel(droneState.getBatteryLevel());
+			droneStateAuditEvent.setDate(new Date());
+			droneStateAuditEvents.add(droneStateAuditEvent);
+		}
+		droneStateAuditRepository.saveAll(droneStateAuditEvents);
 	}
 
 	private void setDroneStatus(DroneState sts){
