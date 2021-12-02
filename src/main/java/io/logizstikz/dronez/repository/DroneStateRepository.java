@@ -9,9 +9,10 @@ import java.util.List;
 
 @Repository
 public interface DroneStateRepository extends JpaRepository<DroneState, Long> {
-    @Query(value = "SELECT TOP 1 s FROM DRONE_STATE s WHERE s.drone_id = ?1 ORDER BY s.id DESC", nativeQuery = true)
-    DroneState getLastDroneStatusByDroneId(long droneId);
 
     @Query(value = "SELECT * FROM DRONE_STATE  WHERE state = 'IDLE' AND battery_capacity >= 25", nativeQuery = true)
     List<DroneState> getAvailableDroneForLoading();
+
+    @Query(value = "SELECT battery_capacity FROM DRONE_STATE  WHERE drone_id = ?1", nativeQuery = true)
+    Integer findBatteryLevelDroneId(Long id);
 }

@@ -49,7 +49,7 @@ class Initializer implements CommandLineRunner {
 
 			DroneState droneState = new DroneState();
 			droneState.setDrone(drone);
-			droneState.setBatteryCapacity(new Random().nextInt(101));
+			droneState.setBatteryLevel(new Random().nextInt(101));
 			setDroneStatus(droneState);
 			statuses.add(droneState);
 
@@ -60,7 +60,7 @@ class Initializer implements CommandLineRunner {
 
 	private void setDroneStatus(DroneState sts){
 		State state = State.values()[new Random().nextInt(State.values().length)];
-		if ((sts.getBatteryCapacity() < ConstantUtil.MIN_BATTERY_CAPACITY ) && state != State.LOADING) {
+		if ((sts.getBatteryLevel() < ConstantUtil.MIN_BATTERY_CAPACITY ) && state != State.LOADING) {
 			sts.setState(state);
 		} else sts.setState(State.IDLE);
 	}

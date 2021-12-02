@@ -19,4 +19,8 @@ public class DroneStateService {
     public List<DroneState> getAvailableDroneForLoading() {
         return droneStateRepository.getAvailableDroneForLoading();
     }
+
+    public Integer getDroneBatteryLevel(Long id) {
+        return droneStateRepository.findBatteryLevelDroneId(id);
+    }
 }

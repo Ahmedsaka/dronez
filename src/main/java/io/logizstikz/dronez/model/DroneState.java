@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "drone_state")
 public class DroneState extends BaseModel{
-    private Integer batteryCapacity;
+    private Integer batteryLevel;
     @Enumerated(EnumType.STRING)
     private State state;
     @OneToOne(cascade = CascadeType.ALL)
