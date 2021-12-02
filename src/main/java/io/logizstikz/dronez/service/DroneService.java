@@ -1,9 +1,9 @@
-package io.logizstikz.dronez;
+package io.logizstikz.dronez.service;
 
 import io.logizstikz.dronez.Enum.Model;
 import io.logizstikz.dronez.exception.NotFoundException;
 import io.logizstikz.dronez.model.Drone;
-import io.logizstikz.dronez.model.DroneRequest;
+import io.logizstikz.dronez.model.request.DroneRequest;
 import io.logizstikz.dronez.repository.DroneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,7 @@ public class DroneService {
 
         Drone drone = new Drone();
         drone.setName(request.getName());
-//        if (request.getWeightLimit() <= ConstantUtil.MAX_CARRIAGE_CAPACITY) {
-//            drone.setWeightLimit(request.getWeightLimit());
-//        } else throw new CarriageCapacityExceededException(String.format("Drone maximum carrying capacity exceeded by {}",
-//                request.getWeightLimit()-ConstantUtil.MAX_CARRIAGE_CAPACITY));
-//
+
        if (request.getModel() != null){
            for (Model m : EnumSet.allOf(Model.class)){
                if (Model.valueOf(request.getModel()).equals(m)) drone.setModel(Model.valueOf(request.getModel()));
@@ -35,5 +31,9 @@ public class DroneService {
 
        log.info("Drone {} created", drone.getName());
        return droneRepository.save(drone);
+    }
+
+    public Drone findById(Long id){
+        return droneRepository.getById(id);
     }
 }

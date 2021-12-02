@@ -1,4 +1,4 @@
-package io.logizstikz.dronez.model;
+package io.logizstikz.dronez.model.request;
 
 import lombok.Data;
 
