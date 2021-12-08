@@ -7,3 +7,7 @@ To build the project, move into the project directory and run mvn clean package
 Move into the target folder to and execute the command java -jar dronez-0.0.1-SNAPSHOT.jar to start the application
 
 Note: this application uses an embedded database
+
+To view the database tables, browse to localhost:8080
+username: sa
+password: password
