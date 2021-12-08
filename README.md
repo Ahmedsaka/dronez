@@ -8,6 +8,6 @@ Move into the target folder to and execute the command java -jar dronez-0.0.1-SN
 
 Note: this application uses an embedded database
 
-To view the database tables, browse to localhost:8080
+To view the database tables, browse to localhost:8080/h2-console
 username: sa
 password: password
